@@ -4,6 +4,7 @@ from google.cloud import texttospeech
 import argparse
 import logging
 
+
 class CommonVoicer:
     """
     CommonVoicer is a Common Voice Generator using difference types of Speech Synthesizer such as
