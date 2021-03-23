@@ -7,7 +7,11 @@ for the training of speech recognition model.
 To solve this issue a little, I create CommonVoicer. It generates Common Voices using difference Speech Synthesizer 
 services such as Google Text To Speech or Azure Text To Speech (Currently, only Google Text To Speech is supported).
 It reads the tab separated value (tsv) file provided by Common Voice which contains client-id, sentence, path of the 
-sound file and other information. It sends the sentence to the Speech Synthesizer service like Google TTS, and stores
-the retrieved sound file.
+sound file and other information. It sends the sentence one by one to the Speech Synthesizer service like Google TTS, 
+and stores the retrieved sound files.
 
 ## Usage
+```
+$ export GOOGLE_APPLICATION_CREDENTIALS="path to the google authentication credentials"
+$ python commonvoicer.py -c validated.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./output"
+```
