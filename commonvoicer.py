@@ -68,7 +68,7 @@ class GoogleCommonVoicer(CommonVoicer):
         # The response's audio_content is binary.
         with open(path / file_name, "wb") as out:
             out.write(response.audio_content)
-            logging.info(f'Audio content written to file {file_name}')
+            logging.info(f'{file} created')
 
     def generate(self, voice_types, output_dir, rewrite=False,
                  random_pitch=False, random_pitch_minmax=5.0,
@@ -96,7 +96,13 @@ def main():
                         help="Enable random speed between (1.0-random_speed_minmax) to (1+random_pitch_minmax)")
     parser.add_argument("--random_speed_minmax", type=float, required=False, default=0.1,
                         help="The value for random speed")
+    parser.add_argument("-q", "--quite", required=False, action='store_true',
+                        help="Disable info about a successful sound file creation")
     args = parser.parse_args()
+    if args.quite:
+        logging.basicConfig(level=logging.WARNING)
+    else:
+        logging.basicConfig(level=logging.INFO)
     commonvoicer = GoogleCommonVoicer(args.commonvoice_file)
     commonvoicer.generate(args.voice_types, args.output_dir)
 
