@@ -4,6 +4,8 @@ from google.cloud import texttospeech
 import argparse
 import logging
 import random
+import time
+
 
 class CommonVoicer:
     """
@@ -79,6 +81,7 @@ class GoogleCommonVoicer(CommonVoicer):
             logging.info(f'{file} created')
 
     def generate(self, voice_types, output_dir, rewrite=False,
+                 sleep=False, sleep_time=0.1,
                  random_pitch=False, random_pitch_minmax=5.0,
                  random_speed=False, random_speed_minmax=0.1):
         for voice_type in voice_types:
@@ -86,6 +89,8 @@ class GoogleCommonVoicer(CommonVoicer):
                 self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
                                 random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
                                 random_speed=random_speed, random_speed_minmax=random_speed_minmax)
+                if sleep:
+                    time.sleep(sleep_time)
 
 
 def main():
@@ -108,6 +113,10 @@ def main():
                         help="The value for random speed")
     parser.add_argument("-q", "--quite", required=False, action='store_true',
                         help="Disable info about a successful sound file creation")
+    parser.add_argument("-s", "--sleep", required=False, action='store_true',
+                        help="Enable sleep in second between request")
+    parser.add_argument("-t", "--sleep_time", type=float, required=False, default=0.1,
+                        help="Sleep time in second between request")
     args = parser.parse_args()
     if args.quite:
         logging.basicConfig(level=logging.WARNING)
@@ -121,7 +130,7 @@ def main():
         commonvoicer.list_voice_types()
     else:
         commonvoicer = GoogleCommonVoicer(args.commonvoice_file)
-        commonvoicer.generate(args.voice_types, args.output_dir,
+        commonvoicer.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
                               random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
                               random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax)
 
