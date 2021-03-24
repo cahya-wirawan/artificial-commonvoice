@@ -13,7 +13,7 @@ Synthesizer service like Google TTS and stores the retrieved sound files.
 
 ## The Cost of Google Text To Speech
 According to the [Google Text To Speech Pricing](https://cloud.google.com/text-to-speech/pricing), the first 4M 
-characters for the standard voice types, and the first 1M characters for Wavenet voice types are free per a month.
+characters for the standard voice types, and the first 1M characters for Wavenet voice types are free per month.
 <img src="https://github.com/cahya-wirawan/artifical-commonvoice/blob/main/images/Google%20TTS%20Pricing.png" alt="Google TTS Pricing" 
 style="width: 400px;"/>
 
