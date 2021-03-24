@@ -99,7 +99,6 @@ you can find these files for example using folllowing command:
 /root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/test.tsv
 /root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/train.tsv
 /root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/validated.tsv
-
 ```
 Now you can use this tsv file to generate sound files. Following is an example to generate sound files for Indonesian 
 Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store oit in output directory:
