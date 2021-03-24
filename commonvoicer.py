@@ -48,6 +48,7 @@ class GoogleCommonVoicer(CommonVoicer):
         path.mkdir(parents=True, exist_ok=True)
         file = path / file_name
         if not rewrite and file.exists():
+            logging.debug(f'{file} is ignored')
             return
 
         input_text = texttospeech.SynthesisInput(text=text)
@@ -113,6 +114,8 @@ def main():
                         help="The value for random speed")
     parser.add_argument("-q", "--quite", required=False, action='store_true',
                         help="Disable info about a successful sound file creation")
+    parser.add_argument("-d", "--debug", required=False, action='store_true',
+                        help="Enable debug messages")
     parser.add_argument("-s", "--sleep", required=False, action='store_true',
                         help="Enable sleep in second between request")
     parser.add_argument("-t", "--sleep_time", type=float, required=False, default=0.1,
@@ -122,6 +125,8 @@ def main():
         logging.basicConfig(level=logging.WARNING)
     else:
         logging.basicConfig(level=logging.INFO)
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
     if not args.list_voice_types and not (args.commonvoice_file and args.output_dir and args.voice_types):
         parser.print_help()
         exit(1)
