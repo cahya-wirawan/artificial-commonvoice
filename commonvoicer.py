@@ -11,8 +11,9 @@ class CommonVoicer:
     Google Text To Speech or Azure Text To Speech.
     """
 
-    def __init__(self, commonvoice_filename):
-        self.commonvoice = pd.read_csv(commonvoice_filename, sep='\t', header=0)
+    def __init__(self, commonvoice_filename=None):
+        if commonvoice_filename:
+            self.commonvoice = pd.read_csv(commonvoice_filename, sep='\t', header=0)
         pass
 
     def synthesize(self, text, voice_type, output_dir, file_name, rewrite=False):
@@ -24,9 +25,16 @@ class GoogleCommonVoicer(CommonVoicer):
     GoogleCommonVoicer
     """
 
-    def __init__(self, commonvoice_filename):
+    def __init__(self, commonvoice_filename=None):
         self.client = texttospeech.TextToSpeechClient()
         super().__init__(commonvoice_filename)
+
+    def list_voice_types(self):
+        """
+        List the supported voice types
+        """
+        voices = self.client.list_voices()
+        print(voices)
 
     def synthesize(self, text, voice_type, output_dir, file_name, rewrite=False,
                    random_pitch=False, random_pitch_minmax=5.0,
@@ -82,17 +90,19 @@ class GoogleCommonVoicer(CommonVoicer):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--commonvoice_file", type=str, required=True,
+    parser.add_argument("-c", "--commonvoice_file", type=str, required=False,
                         help="Common Voice file, a tab separates value file contains client_id, path, sentence, etc..")
-    parser.add_argument("-o", "--output_dir", type=str, required=True,
+    parser.add_argument("-o", "--output_dir", type=str, required=False,
                         help="Output directory where the sound files will be stored")
-    parser.add_argument("-v", "--voice_types", type=str, nargs='+', required=True,
+    parser.add_argument("-l", "--list_voice_types", required=False, action='store_true',
+                        help="List supported voice types")
+    parser.add_argument("-v", "--voice_types", type=str, nargs='+', required=False,
                         help="List of voice types such as id-ID-Standard-A or id-ID-Wavenet-B")
-    parser.add_argument("--random_pitch", type=bool, required=False, default=False,
+    parser.add_argument("--random_pitch", required=False, default=False, action='store_true',
                         help="Enable random pitch between -random_pitch_minmax to random_pitch_minmax")
     parser.add_argument("--random_pitch_minmax", type=float, required=False, default=5.0,
                         help="The value for random pitch")
-    parser.add_argument("--random_speed", type=bool, required=False, default=False,
+    parser.add_argument("--random_speed", required=False, default=False, action='store_true',
                         help="Enable random speed between (1.0-random_speed_minmax) to (1+random_pitch_minmax)")
     parser.add_argument("--random_speed_minmax", type=float, required=False, default=0.1,
                         help="The value for random speed")
@@ -103,8 +113,17 @@ def main():
         logging.basicConfig(level=logging.WARNING)
     else:
         logging.basicConfig(level=logging.INFO)
-    commonvoicer = GoogleCommonVoicer(args.commonvoice_file)
-    commonvoicer.generate(args.voice_types, args.output_dir)
+    if not args.list_voice_types and not (args.commonvoice_file and args.output_dir and args.voice_types):
+        parser.print_help()
+        exit(1)
+    if args.list_voice_types:
+        commonvoicer = GoogleCommonVoicer()
+        commonvoicer.list_voice_types()
+    else:
+        commonvoicer = GoogleCommonVoicer(args.commonvoice_file)
+        commonvoicer.generate(args.voice_types, args.output_dir,
+                              random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
+                              random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax)
 
 
 if __name__ == "__main__":
