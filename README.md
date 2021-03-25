@@ -99,12 +99,12 @@ Get the tsv file from Common Voice dataset. If you have already download it usin
 you can find these files for example using folllowing command:
 ```
 % find ~/.cache/huggingface -name "*.tsv"
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/invalidated.tsv
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/other.tsv
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/reported.tsv
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/test.tsv
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/train.tsv
-/root/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/validated.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/invalidated.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/other.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/reported.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/test.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/train.tsv
+/home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/validated.tsv
 ```
 Now you can use this tsv file to generate sound files. Following is an example to generate sound files for Indonesian 
 Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store oit in output directory:
@@ -131,3 +131,11 @@ test
     └── test02.mp3
 
 ```
+Please keep in mind that the generated sound files have a 24000 sampling rate, where Common Voice sound files have 48000
+sampling rate. You might have to change the code for resampling the sound file to a 16000 sampling rate.
+
+In case you want to generate a bunch of sound files from the Common Voice, Google TTS has a limitation of
+300 requests per minute. I didn't reach this limit when I generated sound files with Wavenet voice types, but it is 
+not the case with the standard voice types. Its generation is swift, so I reached the limit. To avoid it, the script
+provides functionality to sleep 100ms after every request. This can be done using the argument -s for enabling the 
+sleep time and -t for the sleep time (default value is 100ms).
