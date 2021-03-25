@@ -35,8 +35,8 @@ Then you have to install the python module pip install google-cloud-texttospeech
 ### List of commands
 ```
 % export GOOGLE_APPLICATION_CREDENTIALS="path to the google authentication credentials"
-% python commonvoicer.py
-usage: commonvoicer.py [-h] [-c COMMONVOICE_FILE] [-o OUTPUT_DIR] [-l]
+% python commonvoice.py
+usage: commonvoice.py [-h] [-c COMMONVOICE_FILE] [-o OUTPUT_DIR] [-l]
                        [-v VOICE_TYPES [VOICE_TYPES ...]] [--random_pitch]
                        [--random_pitch_minmax RANDOM_PITCH_MINMAX]
                        [--random_speed]
@@ -71,7 +71,7 @@ optional arguments:
 ```
 ### List all supported voice types for all languages
 ```
-% python commonvoicer.py -l
+% python commonvoice.py -l
 ...
 voices {
   language_codes: "id-ID"
@@ -109,7 +109,7 @@ you can find these files for example using folllowing command:
 Now you can use this tsv file to generate sound files. Following is an example to generate sound files for Indonesian 
 Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store it in output directory:
 ```
-% python commonvoicer.py -c validated.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./output"
+% python commonvoice.py -c validated.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./output"
 ```
 You can also create your own tsv files. I included here the file id-voice.tsv as an example
 ```
@@ -118,7 +118,7 @@ path    sentence
 test01.mp3      Kleopatra adalah penguasa aktif terakhir Kerajaan Wangsa Ptolemaios di tanah Mesir.
 test02.mp3      Serealia adalah biji-bijian yang dihasilkan dari tanaman famili Poaceae.
 %
-% python commonvoicer.py -c id-voice.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./test"
+% python commonvoice.py -c id-voice.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./test"
 ```
 This command will create following file structure:
 ```

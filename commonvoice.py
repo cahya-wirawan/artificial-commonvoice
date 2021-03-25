@@ -7,9 +7,9 @@ import random
 import time
 
 
-class CommonVoicer:
+class CommonVoice:
     """
-    CommonVoicer is a Common Voice Generator using difference types of Speech Synthesizer such as
+    CommonVoice is a Common Voice Generator using difference types of Speech Synthesizer such as
     Google Text To Speech or Azure Text To Speech.
     """
 
@@ -22,9 +22,9 @@ class CommonVoicer:
         pass
 
 
-class GoogleCommonVoicer(CommonVoicer):
+class GoogleCommonVoice(CommonVoice):
     """
-    GoogleCommonVoicer
+    GoogleCommonVoice
     """
 
     def __init__(self, commonvoice_filename=None):
@@ -131,11 +131,11 @@ def main():
         parser.print_help()
         exit(1)
     if args.list_voice_types:
-        commonvoicer = GoogleCommonVoicer()
-        commonvoicer.list_voice_types()
+        commonvoice = GoogleCommonVoice()
+        commonvoice.list_voice_types()
     else:
-        commonvoicer = GoogleCommonVoicer(args.commonvoice_file)
-        commonvoicer.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
+        commonvoice = GoogleCommonVoice(args.commonvoice_file)
+        commonvoice.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
                               random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
                               random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax)
 
