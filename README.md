@@ -7,15 +7,15 @@ for the training of speech recognition model.
 To mitigate this issue a little, I create Artificial Common Voice. It generates Common Voices artificially using 
 different Speech Synthesizer services such as [Google Text To Speech](https://cloud.google.com/text-to-speech) 
 or [Azure Text To Speech](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/) 
-(Currently, only Google Text To Speech is supported). It reads the tab-separated value (tsv) file provided by Common Voice, which contains 
-client-id, sentence, the sound file path, and other information. It sends the sentence one by one to the Speech 
-Synthesizer service like Google TTS and stores the retrieved sound files.
+(Currently, only Google Text To Speech is supported). It reads the tab-separated value (tsv) file provided by 
+Common Voice, which contains client-id, sentence, the sound file path, and other information. It sends the sentence 
+one by one to the Speech Synthesizer service like Google TTS and stores the retrieved sound files.
 
 ## The Cost of Google Text To Speech
 According to the [Google Text To Speech Pricing](https://cloud.google.com/text-to-speech/pricing), the first 4M 
 characters for the standard voice types, and the first 1M characters for Wavenet voice types are free per month.
-<img src="https://github.com/cahya-wirawan/artifical-commonvoice/blob/main/images/Google%20TTS%20Pricing.png" alt="Google TTS Pricing" 
-style="width: 300px;"/>
+<img src="https://github.com/cahya-wirawan/artifical-commonvoice/blob/main/images/Google%20TTS%20Pricing.png" 
+alt="Google TTS Pricing" style="width: 300px;"/>
 
 ## Prerequisite
 
