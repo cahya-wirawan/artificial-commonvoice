@@ -131,8 +131,8 @@ test
     └── test02.mp3
 
 ```
-Please keep in mind that the generated sound files have a 24000 sampling rate, where Common Voice sound files have 48000
-sampling rate. You might have to change the code for resampling the sound file to a 16000 sampling rate.
+Please keep in mind that the generated sound files have a 24000Hz sampling rate, where Common Voice sound files have 
+48000Hz sampling rate. You might have to change the code for resampling the sound file to a 16000Hz sampling rate.
 
 In case you want to generate a bunch of sound files from the Common Voice, Google TTS has a limitation of
 300 requests per minute. I didn't reach this limit when I generated sound files with Wavenet voice types, but it is 
