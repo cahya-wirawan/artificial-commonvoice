@@ -111,14 +111,14 @@ Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store it 
 ```
 % python commonvoice.py -c validated.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./output"
 ```
-You can also create your own tsv files. I included here the file id-voice.tsv as an example
+You can also create your own tsv files. I included here the file voice-id.tsv as an example
 ```
-% cat id-voice.tsv 
+% cat voice-id.tsv 
 path    sentence
 test01.mp3      Kleopatra adalah penguasa aktif terakhir Kerajaan Wangsa Ptolemaios di tanah Mesir.
 test02.mp3      Serealia adalah biji-bijian yang dihasilkan dari tanaman famili Poaceae.
 %
-% python commonvoice.py -c id-voice.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./test"
+% python commonvoice.py -c voice-id.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./test"
 ```
 This command will create following file structure:
 ```
