@@ -107,7 +107,7 @@ you can find these files for example using folllowing command:
 /home/cahya/.cache/huggingface/datasets/downloads/extracted/fd8a16a97efd77adba3c26c54d0cfae6c9d9494c1017f8070f3f79db72c4b57c/cv-corpus-6.1-2020-12-11/id/validated.tsv
 ```
 Now you can use this tsv file to generate sound files. Following is an example to generate sound files for Indonesian 
-Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store oit in output directory:
+Common Voice with two voice types id-ID-Standard-A id-ID-Wavenet-B and store it in output directory:
 ```
 % python commonvoicer.py -c validated.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./output"
 ```
@@ -120,7 +120,7 @@ test02.mp3      Serealia adalah biji-bijian yang dihasilkan dari tanaman famili 
 %
 % python commonvoicer.py -c id-voice.tsv -v id-ID-Standard-A id-ID-Wavenet-B -o "./test"
 ```
-This command will create following file structures:
+This command will create following file structure:
 ```
 test
 ├── id-ID-Standard-A
