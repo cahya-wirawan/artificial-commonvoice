@@ -25,7 +25,7 @@ GOOGLE_APPLICATION_CREDENTIALS. Please follow this
 [Google Cloud Text-to-Speech API Setup](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries)
 to do all above.
 
-Then you have to install the python module pip install google-cloud-texttospeech
+Then you have to install the python module google-cloud-texttospeech
 ```
 % pip install google-cloud-texttospeech
 ```
