@@ -49,7 +49,7 @@ class GoogleCommonVoice(CommonVoice):
         file = path / file_name
         if not rewrite and file.exists():
             logging.debug(f'{file} is ignored')
-            return
+            return False
 
         input_text = texttospeech.SynthesisInput(text=text)
 
@@ -80,6 +80,7 @@ class GoogleCommonVoice(CommonVoice):
         with open(path / file_name, "wb") as out:
             out.write(response.audio_content)
             logging.info(f'{file} created')
+        return True
 
     def generate(self, voice_types, output_dir, rewrite=False,
                  sleep=False, sleep_time=0.1,
@@ -87,10 +88,10 @@ class GoogleCommonVoice(CommonVoice):
                  random_speed=False, random_speed_minmax=0.1):
         for voice_type in voice_types:
             for i, row in self.commonvoice.iterrows():
-                self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
+                result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
                                 random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
                                 random_speed=random_speed, random_speed_minmax=random_speed_minmax)
-                if sleep:
+                if result and sleep:
                     time.sleep(sleep_time)
 
 
