@@ -26,6 +26,11 @@ class GoogleCommonVoice(CommonVoice):
     """
     GoogleCommonVoice
     """
+    audio_encoding = {
+        "LINEAR16": texttospeech.AudioEncoding.LINEAR16,
+        "MP3": texttospeech.AudioEncoding.MP3,
+        "OGG_OPUS": texttospeech.AudioEncoding.OGG_OPUS
+    }
 
     def __init__(self, commonvoice_filename=None):
         self.client = texttospeech.TextToSpeechClient()
@@ -38,7 +43,7 @@ class GoogleCommonVoice(CommonVoice):
         voices = self.client.list_voices()
         print(voices)
 
-    def synthesize(self, text, voice_type, output_dir, file_name, rewrite=False,
+    def synthesize(self, text, voice_type, output_dir, file_name, rewrite=False, audio_encoding="MP3",
                    random_pitch=False, random_pitch_minmax=5.0,
                    random_speed=False, random_speed_minmax=0.1):
         """
@@ -69,7 +74,7 @@ class GoogleCommonVoice(CommonVoice):
         else:
             speed = 1.0
         audio_config = texttospeech.AudioConfig({
-            "audio_encoding": texttospeech.AudioEncoding.MP3,
+            "audio_encoding": GoogleCommonVoice.audio_encoding[audio_encoding],
             "pitch": pitch,
             "speaking_rate": speed
         })
@@ -83,14 +88,15 @@ class GoogleCommonVoice(CommonVoice):
         return True
 
     def generate(self, voice_types, output_dir, rewrite=False,
-                 sleep=False, sleep_time=0.1,
+                 sleep=False, sleep_time=0.1, audio_encoding="MP3",
                  random_pitch=False, random_pitch_minmax=5.0,
                  random_speed=False, random_speed_minmax=0.1):
         for voice_type in voice_types:
             for i, row in self.commonvoice.iterrows():
                 result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
-                                random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
-                                random_speed=random_speed, random_speed_minmax=random_speed_minmax)
+                                         random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
+                                         random_speed=random_speed, random_speed_minmax=random_speed_minmax,
+                                         audio_encoding=audio_encoding)
                 if result and sleep:
                     time.sleep(sleep_time)
 
@@ -105,6 +111,9 @@ def main():
                         help="List supported voice types")
     parser.add_argument("-v", "--voice_types", type=str, nargs='+', required=False,
                         help="List of voice types such as id-ID-Standard-A or id-ID-Wavenet-B")
+    parser.add_argument("--audio_encoding", type=str, required=False, default="MP3",
+                        help="The encoding determines the output audio format that we'd like. Following audio "
+                             "encoding are supported: LINEAR16, MP3 and OGG_OPUS")
     parser.add_argument("--random_pitch", required=False, default=False, action='store_true',
                         help="Enable random pitch between -random_pitch_minmax to random_pitch_minmax")
     parser.add_argument("--random_pitch_minmax", type=float, required=False, default=5.0,
@@ -137,8 +146,9 @@ def main():
     else:
         commonvoice = GoogleCommonVoice(args.commonvoice_file)
         commonvoice.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
-                              random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
-                              random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax)
+                             random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
+                             random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax,
+                             audio_encoding=args.audio_encoding)
 
 
 if __name__ == "__main__":
