@@ -90,15 +90,19 @@ class GoogleCommonVoice(CommonVoice):
     def generate(self, voice_types, output_dir, rewrite=False,
                  sleep=False, sleep_time=0.1, audio_encoding="MP3",
                  random_pitch=False, random_pitch_minmax=5.0,
-                 random_speed=False, random_speed_minmax=0.1):
+                 random_speed=False, random_speed_minmax=0.1,
+                 start=0, end=-1):
         for voice_type in voice_types:
             for i, row in self.commonvoice.iterrows():
-                result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
-                                         random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
-                                         random_speed=random_speed, random_speed_minmax=random_speed_minmax,
-                                         audio_encoding=audio_encoding)
-                if result and sleep:
-                    time.sleep(sleep_time)
+                if end != -1 and i >= end:
+                    return
+                if i >= start:
+                    result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
+                                             random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
+                                             random_speed=random_speed, random_speed_minmax=random_speed_minmax,
+                                             audio_encoding=audio_encoding)
+                    if result and sleep:
+                        time.sleep(sleep_time)
 
 
 def main():
@@ -130,6 +134,10 @@ def main():
                         help="Enable sleep in second between request")
     parser.add_argument("-t", "--sleep_time", type=float, required=False, default=0.1,
                         help="Sleep time in second between request")
+    parser.add_argument("--start", type=int, required=False, default=0,
+                        help="Which line will the request will start?")
+    parser.add_argument("--end", type=int, required=False, default=-1,
+                        help="Which line will the request will end?")
     args = parser.parse_args()
     if args.quite:
         logging.basicConfig(level=logging.WARNING)
@@ -148,7 +156,7 @@ def main():
         commonvoice.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
                              random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
                              random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax,
-                             audio_encoding=args.audio_encoding)
+                             audio_encoding=args.audio_encoding, start=args.start, end=args.end)
 
 
 if __name__ == "__main__":
