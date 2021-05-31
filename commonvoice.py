@@ -15,7 +15,7 @@ class CommonVoice:
 
     def __init__(self, commonvoice_filename=None):
         if commonvoice_filename:
-            self.commonvoice = pd.read_csv(commonvoice_filename, sep='\t', header=0)
+            self.commonvoice = pd.read_csv(commonvoice_filename, sep='\t', header=0, quoting=3)
         pass
 
     def synthesize(self, text, voice_type, output_dir, file_name, rewrite=False):
@@ -92,17 +92,20 @@ class GoogleCommonVoice(CommonVoice):
                  random_pitch=False, random_pitch_minmax=5.0,
                  random_speed=False, random_speed_minmax=0.1,
                  start=0, end=-1):
+        stats = {"number_of_chars": 0}
         for voice_type in voice_types:
             for i, row in self.commonvoice.iterrows():
                 if end != -1 and i >= end:
-                    return
+                    break
                 if i >= start:
+                    stats["number_of_chars"] += len(row["sentence"])
                     result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
                                              random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
                                              random_speed=random_speed, random_speed_minmax=random_speed_minmax,
                                              audio_encoding=audio_encoding)
                     if result and sleep:
                         time.sleep(sleep_time)
+        return stats
 
 
 def main():
@@ -153,10 +156,11 @@ def main():
         commonvoice.list_voice_types()
     else:
         commonvoice = GoogleCommonVoice(args.commonvoice_file)
-        commonvoice.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
+        stats = commonvoice.generate(args.voice_types, args.output_dir, sleep=args.sleep, sleep_time=args.sleep_time,
                              random_pitch=args.random_pitch, random_pitch_minmax=args.random_pitch_minmax,
                              random_speed=args.random_speed, random_speed_minmax=args.random_speed_minmax,
                              audio_encoding=args.audio_encoding, start=args.start, end=args.end)
+        print(f'Synthesized characters: {stats["number_of_chars"]}')
 
 
 if __name__ == "__main__":
