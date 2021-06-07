@@ -145,12 +145,12 @@ def main():
     parser.add_argument("--end", type=int, required=False, default=-1,
                         help="Which line will the request will end?")
     args = parser.parse_args()
-    if args.quite:
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    elif args.quite:
         logging.basicConfig(level=logging.WARNING)
     else:
         logging.basicConfig(level=logging.INFO)
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
     if not args.list_voice_types and not (args.commonvoice_file and args.output_dir and args.voice_types):
         parser.print_help()
         exit(1)
