@@ -93,18 +93,21 @@ class GoogleCommonVoice(CommonVoice):
                  random_speed=False, random_speed_minmax=0.1,
                  start=0, end=-1):
         stats = {"number_of_chars": 0}
+        start = min(max(0, start), len(self.commonvoice))
+        if end == -1:
+            end = len(self.commonvoice)
+        else:
+            end = min(max(0, end), len(self.commonvoice))
         for voice_type in voice_types:
-            for i, row in self.commonvoice.iterrows():
-                if end != -1 and i >= end:
-                    break
-                if i >= start:
-                    stats["number_of_chars"] += len(row["sentence"])
-                    result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
-                                             random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
-                                             random_speed=random_speed, random_speed_minmax=random_speed_minmax,
-                                             audio_encoding=audio_encoding)
-                    if result and sleep:
-                        time.sleep(sleep_time)
+            for i in range(start, end):
+                row = self.commonvoice.iloc[i]
+                stats["number_of_chars"] += len(row["sentence"])
+                result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
+                                         random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
+                                         random_speed=random_speed, random_speed_minmax=random_speed_minmax,
+                                         audio_encoding=audio_encoding)
+                if result and sleep:
+                    time.sleep(sleep_time)
         return stats
 
 
