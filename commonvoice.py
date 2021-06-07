@@ -101,13 +101,14 @@ class GoogleCommonVoice(CommonVoice):
         for voice_type in voice_types:
             for i in range(start, end):
                 row = self.commonvoice.iloc[i]
-                stats["number_of_chars"] += len(row["sentence"])
                 result = self.synthesize(row["sentence"], voice_type, output_dir, row["path"], rewrite=rewrite,
                                          random_pitch=random_pitch, random_pitch_minmax=random_pitch_minmax,
                                          random_speed=random_speed, random_speed_minmax=random_speed_minmax,
                                          audio_encoding=audio_encoding)
-                if result and sleep:
-                    time.sleep(sleep_time)
+                if result:
+                    stats["number_of_chars"] += len(row["sentence"])
+                    if sleep:
+                        time.sleep(sleep_time)
         return stats
 
 
